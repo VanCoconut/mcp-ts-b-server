@@ -45,6 +45,7 @@ const getExchangeRate = server.tool(
             throw new Error(`Exchange rate API error: ${resp.status} - ${txt}`);
         }
         const rates = await resp.json();
+        // @ts-ignore
         const rate = rates[to.toLowerCase()]?.rate;
         if (!rate) throw new Error(`No rate found for ${from} -> ${to}`);
         return {
