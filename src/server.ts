@@ -24,16 +24,18 @@ const getWeather = server.tool(
             throw new Error(`Weather API error: ${resp.status} - ${txt}`);
         }
 
-        let weatherText = await resp.text();
+        let weatherText: string = await resp.text();
 
         // Estrarre temperatura e unità
         const match = weatherText.match(/([+-]?\d+)(°[CF])/);
         if (match) {
-            let [full, temp, unit] = match;
-            temp = parseInt(temp, 10);
+            const full: string = match[0];     // tutto il match
+            const tempStr: string = match[1];  // numero come stringa
+            const unit: string = match[2];     // °C o °F
+
             if (unit === "°F") {
-                // Converti F → C
-                const celsius = Math.round((temp - 32) * 5 / 9);
+                const tempNum: number = parseInt(tempStr, 10);
+                const celsius: number = Math.round((tempNum - 32) * 5 / 9);
                 weatherText = weatherText.replace(full, `${celsius}°C`);
             }
         }
@@ -43,7 +45,6 @@ const getWeather = server.tool(
         };
     }
 );
-
 
 // Tool: get_exchange_rate
 const getExchangeRate = server.tool(
