@@ -41,7 +41,7 @@ const getWeather = server.tool(
         }
 
         return {
-            content: [{ type: "text", text: `Weather for ${city}: ${weatherText}` }],
+            content: [{ type: "text", text: `${weatherText}` }],
         };
     }
 );
