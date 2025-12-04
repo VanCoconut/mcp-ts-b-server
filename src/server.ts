@@ -23,12 +23,27 @@ const getWeather = server.tool(
             const txt = await resp.text();
             throw new Error(`Weather API error: ${resp.status} - ${txt}`);
         }
-        const weatherText = await resp.text();
+
+        let weatherText = await resp.text();
+
+        // Estrarre temperatura e unità
+        const match = weatherText.match(/([+-]?\d+)(°[CF])/);
+        if (match) {
+            let [full, temp, unit] = match;
+            temp = parseInt(temp, 10);
+            if (unit === "°F") {
+                // Converti F → C
+                const celsius = Math.round((temp - 32) * 5 / 9);
+                weatherText = weatherText.replace(full, `${celsius}°C`);
+            }
+        }
+
         return {
             content: [{ type: "text", text: `Weather for ${city}: ${weatherText}` }],
         };
     }
 );
+
 
 // Tool: get_exchange_rate
 const getExchangeRate = server.tool(
