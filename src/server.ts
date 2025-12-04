@@ -18,7 +18,7 @@ const getWeather = server.tool(
     "A tool to get the weather of a city. Does not need any authentication.",
     { city: z.string().describe("Name of the city to get the weather for") },
     async ({ city }, _extra) => {
-        const resp = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=3`);
+        const resp = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=3&u=m`);
         if (!resp.ok) {
             const txt = await resp.text();
             throw new Error(`Weather API error: ${resp.status} - ${txt}`);
